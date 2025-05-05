@@ -33,7 +33,9 @@ jobs:
         uses: denoland/setup-deno@61fe2df320078202e33d7d5ad347e7dcfa0e8f31  # v1.1.2
         with:
           deno-version: v1.x
-
+        env: # Or as an environment variable
+          GOOGLE_DRIVE_CLIENT_ID: ${{ secrets.GOOGLE_DRIVE_CLIENT_ID }}
+          GOOGLE_DRIVE_API_KEY: ${{ secrets.GOOGLE_DRIVE_API_KEY }}
 
       # Uncomment this step to verify the use of 'deno fmt' on each commit.
       # - name: Verify formatting
