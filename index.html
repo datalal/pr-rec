@@ -7,6 +7,15 @@
     <link href="styles/app.css" rel="stylesheet" type="text/css">
   </head>
   <body>
+    <div>
+        <div class="row">
+            <input type="button" id="authorize_button"
+                onclick="handleAuthClick()" value="Authorize"> <input
+                type="button" id="signout_button"
+                onclick="handleSignoutClick()" value="Sign Out">
+
+        </div>
+    </div>
     <header>
         <h1>PURE RAVE RECORDER</h1>
       </header>
@@ -17,15 +26,7 @@
           <button class="record">Record</button>
         </div>
       </section>
-      <div>
-        <div class="row">
-            <input type="button" id="authorize_button"
-                onclick="handleAuthClick()" value="Authorize"> <input
-                type="button" id="signout_button"
-                onclick="handleSignoutClick()" value="Sign Out">
 
-        </div>
-    </div>
       <section class="sound-clips">
 
       </section>
