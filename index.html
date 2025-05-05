@@ -7,27 +7,35 @@
     <link href="styles/app.css" rel="stylesheet" type="text/css">
   </head>
   <body>
-    <div class="wrapper">
+    <header>
+        <h1>PURE RAVE RECORDER</h1>
+      </header>
+    <button class="stop">Stop</button>
+    <canvas class="visualizer" height="260px" width=100%></canvas>
+    <section class="main-controls">
+        <div id="buttons">
+          <button class="record">Record</button>
+        </div>
+      </section>
+      <div>
+        <div class="row">
+            <input type="button" id="authorize_button"
+                onclick="handleAuthClick()" value="Authorize"> <input
+                type="button" id="signout_button"
+                onclick="handleSignoutClick()" value="Sign Out">
 
-        <header>
-          <h1>PURE RAVE RECORDER</h1>
-        </header>
-  
-        <section class="main-controls">
-          <canvas class="visualizer" height="100px"></canvas>
-          <div id="buttons">
-            <button class="record">Record</button>
-            <button class="stop">Stop</button>
-          </div>
-        </section>
-  
-        <section class="sound-clips">
-  
-  
-        </section>
-  
-      </div>
+        </div>
+    </div>
+      <section class="sound-clips">
+
+      </section>
+        <div class="wrapper"></div>
+    </div>
       <script src="scripts/app.js"></script>
+      <script async defer src="https://apis.google.com/js/api.js"
+      onload="gapiLoaded()"></script>
+  <script async defer src="https://accounts.google.com/gsi/client"
+      onload="gisLoaded()"></script>
 
 </body>
 </html>

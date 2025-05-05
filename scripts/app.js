@@ -4,6 +4,7 @@ const stop = document.querySelector(".stop");
 const soundClips = document.querySelector(".sound-clips");
 const canvas = document.querySelector(".visualizer");
 const mainSection = document.querySelector(".main-controls");
+const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';
 
 // Disable stop button while not recording
 stop.disabled = true;
@@ -21,7 +22,7 @@ if (navigator.mediaDevices.getUserMedia) {
 
   let onSuccess = function (stream) {
     const mediaRecorder = new MediaRecorder(stream);
-
+    mediaRecorder.mimeType = 'audio/webm;codecs="opus"';
     visualize(stream);
 
     record.onclick = function () {
@@ -70,7 +71,8 @@ if (navigator.mediaDevices.getUserMedia) {
       );
 
       const clipContainer = document.createElement("article");
-      const clipLabel = document.createElement("p");
+      const clipLabel = document.createElement("h1");
+      const clipTime = document.createElement("p");
       const audio = document.createElement("audio");
       const deleteButton = document.createElement("button");
 
@@ -78,6 +80,8 @@ if (navigator.mediaDevices.getUserMedia) {
       audio.setAttribute("controls", "");
       deleteButton.textContent = "Delete";
       deleteButton.className = "delete";
+      clipLabel.className = "clipLabel";
+      clipTime.className = "clipTime";
 
       if (clipName === null) {
         clipLabel.textContent = "My unnamed clip";
@@ -85,8 +89,12 @@ if (navigator.mediaDevices.getUserMedia) {
         clipLabel.textContent = clipName;
       }
 
+      timeStamp = new Date;
+      clipTime.textContent = timeStamp.toLocaleString();
+
       clipContainer.appendChild(audio);
       clipContainer.appendChild(clipLabel);
+      clipLabel.appendChild(clipTime);
       clipContainer.appendChild(deleteButton);
       soundClips.appendChild(clipContainer);
 
@@ -94,6 +102,7 @@ if (navigator.mediaDevices.getUserMedia) {
       const blob = new Blob(chunks, { type: mediaRecorder.mimeType });
       chunks = [];
       const audioURL = window.URL.createObjectURL(blob);
+      uploadFile(blob, clipName);
       audio.src = audioURL;
       console.log("recorder stopped");
 
@@ -184,3 +193,133 @@ window.onresize = function () {
 };
 
 window.onresize();
+
+
+// Set API access scope before proceeding authorization request
+const SCOPES = 'https://www.googleapis.com/auth/drive.file';
+let tokenClient;
+let gapiInited = false;
+let gisInited = false;
+
+// document.getElementById('authorize_button').style.visibility = 'hidden';
+// document.getElementById('signout_button').style.visibility = 'hidden';
+
+/**
+ * Callback after api.js is loaded.
+ */
+function gapiLoaded() {
+	gapi.load('client', initializeGapiClient);
+}
+
+/**
+ * Callback after the API client is loaded. Loads the
+ * discovery doc to initialize the API.
+ */
+async function initializeGapiClient() {
+	await gapi.client.init({
+		apiKey: GOOGLE_DRIVE_API_KEY,
+		discoveryDocs: [DISCOVERY_DOC],
+	});
+	gapiInited = true;
+	maybeEnableButtons();
+}
+
+/**
+ * Callback after Google Identity Services are loaded.
+ */
+function gisLoaded() {
+	tokenClient = google.accounts.oauth2.initTokenClient({
+		client_id: GOOGLE_DRIVE_CLIENT_ID,
+		scope: SCOPES,
+		callback: '', // defined later
+	});
+	gisInited = true;
+	maybeEnableButtons();
+}
+
+/**
+ * Enables user interaction after all libraries are loaded.
+ */
+function maybeEnableButtons() {
+	if (gapiInited && gisInited) {
+		document.getElementById('authorize_button').style.visibility = 'visible';
+	}
+}
+
+/**
+ *  Sign in the user upon button click.
+ */
+function handleAuthClick() {
+	tokenClient.callback = async (resp) => {
+		if (resp.error !== undefined) {
+			throw (resp);
+		}
+		document.getElementById('signout_button').style.visibility = 'visible';
+		document.getElementById('authorize_button').value = 'Refresh';
+		// await uploadFile();
+
+	};
+
+	if (gapi.client.getToken() === null) {
+		// Prompt the user to select a Google Account and ask for consent to share their data
+		// when establishing a new session.
+		tokenClient.requestAccessToken({ prompt: 'consent' });
+	} else {
+		// Skip display of account chooser and consent dialog for an existing session.
+		tokenClient.requestAccessToken({ prompt: '' });
+	}
+}
+
+/**
+ *  Sign out the user upon button click.
+ */
+function handleSignoutClick() {
+	const token = gapi.client.getToken();
+	if (token !== null) {
+		google.accounts.oauth2.revoke(token.access_token);
+		gapi.client.setToken('');
+		document.getElementById('content').style.display = 'none';
+		document.getElementById('content').innerHTML = '';
+		document.getElementById('authorize_button').value = 'Authorize';
+		// document.getElementById('signout_button').style.visibility = 'hidden';
+	}
+}
+
+/**
+ * Upload file to Google Drive.
+ */
+async function uploadFile(recFile, clipName) {
+	var fileContent = 'Hello World'; // As a sample, upload a text file.
+	// var file = new Blob([fileContent], { type: 'text/plain' });
+	var file = recFile;
+  fileTimeStamp = new Date; 
+  fileTime = fileTimeStamp.toISOString();
+	var metadata = {
+		'name': clipName + '_' + fileTime + '.webm', // Filename at Google Drive
+		'mimeType': 'audio/webm', // mimeType at Google Drive
+		// TODO [Optional]: Set the below credentials
+		// Note: remove this parameter, if no target is needed
+		'parents': ['1rD041CK4f59PJrBP6NUhzDNRfdnK1O-G'], // Folder ID at Google Drive which is optional
+	};
+
+	var accessToken = gapi.auth.getToken().access_token; // Here gapi is used for retrieving the access token.
+	var form = new FormData();
+	form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+	form.append('file', file);
+  
+  for (var key of form.entries()) {
+    console.log(key[0] + ', ' + key[1]);
+}
+
+
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id' );
+	xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+	xhr.responseType = 'json';
+	xhr.onload = () => {
+		console.log(xhr.response.id);
+    console.log(xhr.response);
+	};
+	xhr.send(form);
+
+}

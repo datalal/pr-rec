@@ -74,8 +74,10 @@ button:active {
  * also show a scrollbar when there are too many clips to show
  * in the available space */
 .sound-clips {
+  margin: 40px auto;
   flex: 1;
   overflow: auto;
+  width: 50%;
 }
 
 section,
@@ -177,5 +179,22 @@ input[type="checkbox"]:checked ~ aside {
 
 .record {
   height: 200px;
-  width: 100% !important;
+  width: 50% !important;
+  margin: auto;  
+}
+
+/* .visualizer{
+width: 100%;
+} */
+
+.clipLabel{
+  font-size: 64px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.clipTime{
+  font-size: 24px;
+  font-weight: bold;
+  margin: 24px;
 }
