@@ -28,6 +28,7 @@ jobs:
       - name: Set ENV VAR
         run: |
           echo "GOOGLE_DRIVE_CLIENT_ID_VAR=${{ vars.GOOGLE_DRIVE_CLIENT_ID_VAR }}" >> $GITHUB_OUTPUT
+          echo "GOOGLE_DRIVE_CLIENT_ID_VAR=${{ vars.GOOGLE_DRIVE_CLIENT_ID_VAR }}" >> $GITHUB_ENV
       - name: Display ENV VAR
         run: |
           echo "GOOGLE_DRIVE_CLIENT_ID_VAR: $GOOGLE_DRIVE_CLIENT_ID_VAR"
