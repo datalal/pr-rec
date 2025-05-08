@@ -22,19 +22,22 @@ jobs:
     runs-on: ubuntu-latest
     environment: github-pages
     steps:
-      - uses: actions/checkout@v4
-        with:
-          node-version: '20'
-      - run: |
+      # - uses: actions/checkout@v4
+        # with:
+        #   node-version: '20'
+      - name: Set ENV VAR
+        run: echo "GOOGLE_DRIVE_CLIENT_ID_VAR=testVal" >> $GITHUB_ENV
+      - name: Display ENV VAR
+        run: |
           echo "GOOGLE_DRIVE_CLIENT_ID_VAR: $GOOGLE_DRIVE_CLIENT_ID_VAR"
-          echo "GOOGLE_DRIVE_CLIENT_ID_VAR: $vars.GOOGLE_DRIVE_CLIENT_ID_VAR"
-          echo "ENV_VARIABLE : $ENV_VARIABLE"
-          echo "GOOGLE_DRIVE_CLIENT_ID_VAR=vars.GOOGLE_DRIVE_CLIENT_ID_VAR" >> "$GITHUB_ENV"
-          echo "GOOGLE_DRIVE_CLIENT_ID_VAR: $GOOGLE_DRIVE_CLIENT_ID_VAR"
-        env: # Or as an environment variable
-          GOOGLE_DRIVE_CLIENT_ID: ${{ secrets.GOOGLE_DRIVE_CLIENT_ID }}
-          GOOGLE_DRIVE_API_KEY: '${{ secrets.GOOGLE_DRIVE_API_KEY }}' 
-          GOOGLE_DRIVE_CLIENT_ID_VAR: ${{ vars.GOOGLE_DRIVE_CLIENT_ID_VAR }}
+          # echo "GOOGLE_DRIVE_CLIENT_ID_VAR: $vars.GOOGLE_DRIVE_CLIENT_ID_VAR"
+          # echo "ENV_VARIABLE : $ENV_VARIABLE"
+          # echo "GOOGLE_DRIVE_CLIENT_ID_VAR=vars.GOOGLE_DRIVE_CLIENT_ID_VAR" >> "$GITHUB_ENV"
+          # echo "GOOGLE_DRIVE_CLIENT_ID_VAR: $GOOGLE_DRIVE_CLIENT_ID_VAR"
+        # env: # Or as an environment variable
+        #   GOOGLE_DRIVE_CLIENT_ID: ${{ secrets.GOOGLE_DRIVE_CLIENT_ID }}
+        #   GOOGLE_DRIVE_API_KEY: '${{ secrets.GOOGLE_DRIVE_API_KEY }}' 
+        #   GOOGLE_DRIVE_CLIENT_ID_VAR: ${{ vars.GOOGLE_DRIVE_CLIENT_ID_VAR }}
 
       # - run: bats -v
       
