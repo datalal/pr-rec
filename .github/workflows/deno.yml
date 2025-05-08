@@ -18,19 +18,17 @@ on:
 jobs:  
   set-up-env-variables:
     runs-on: ubuntu-latest
-  # test:
-  #   runs-on: ubuntu-latest
     steps:
-      uses: actions/checkout@v4
-      with:
-        node-version: '20'
-      run: |
-        echo "GOOGLE_DRIVE_CLIENT_ID_VAR: $GOOGLE_DRIVE_CLIENT_ID_VAR"
-        # echo "GOOGLE_DRIVE_API_KEY_VAR : $GOOGLE_DRIVE_API_KEY_VAR"
-      env: # Or as an environment variable
-        GOOGLE_DRIVE_CLIENT_ID: '${{ secrets.GOOGLE_DRIVE_CLIENT_ID }}'
-        GOOGLE_DRIVE_API_KEY: '${{ secrets.GOOGLE_DRIVE_API_KEY }}' 
-        GOOGLE_DRIVE_CLIENT_ID_VAR: ${{ vars.GOOGLE_DRIVE_CLIENT_ID_VAR }}
+      - uses: actions/checkout@v4
+        with:
+          node-version: '20'
+      - run: |
+          echo "GOOGLE_DRIVE_CLIENT_ID_VAR: $GOOGLE_DRIVE_CLIENT_ID_VAR"
+          # echo "GOOGLE_DRIVE_API_KEY_VAR : $GOOGLE_DRIVE_API_KEY_VAR"
+        env: # Or as an environment variable
+          GOOGLE_DRIVE_CLIENT_ID: '${{ secrets.GOOGLE_DRIVE_CLIENT_ID }}'
+          GOOGLE_DRIVE_API_KEY: '${{ secrets.GOOGLE_DRIVE_API_KEY }}' 
+          GOOGLE_DRIVE_CLIENT_ID_VAR: ${{ vars.GOOGLE_DRIVE_CLIENT_ID_VAR }}
 
       # - run: bats -v
       
