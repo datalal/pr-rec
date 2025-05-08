@@ -229,7 +229,7 @@ async function initializeGapiClient() {
  */
 function gisLoaded() {
 	tokenClient = google.accounts.oauth2.initTokenClient({
-		client_id: env.GOOGLE_DRIVE_CLIENT_ID,
+		client_id: env.GOOGLE_DRIVE_CLIENT_ID_VAR,
 		scope: SCOPES,
 		callback: '', // defined later
 	});
