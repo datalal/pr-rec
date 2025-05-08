@@ -12,8 +12,8 @@ on:
   push:
     branches: ["main"]
 env:
-  	ENV_VARIABLE: test
-    GOOGLE_DRIVE_CLIENT_ID_VAR: ${{ vars.GOOGLE_DRIVE_CLIENT_ID_VAR }}
+  ENV_VARIABLE: test
+  GOOGLE_DRIVE_CLIENT_ID_VAR: '${{ vars.GOOGLE_DRIVE_CLIENT_ID_VAR }}'
 # permissions:
 #   contents: read
 
