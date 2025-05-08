@@ -228,8 +228,8 @@ async function initializeGapiClient() {
  * Callback after Google Identity Services are loaded.
  */
 function gisLoaded() {
-	console.log(GOOGLE_DRIVE_CLIENT_ID_VAR);
 	console.log(ENV_VARIABLE);
+	console.log(GOOGLE_DRIVE_CLIENT_ID_VAR);
 	console.log(GOOGLE_DRIVE_API_KEY);
 	console.log(env.GOOGLE_DRIVE_CLIENT_ID_VAR);
 	console.log(env.ENV_VARIABLE);
