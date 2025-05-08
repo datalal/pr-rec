@@ -16,7 +16,7 @@ on:
 #   contents: read
 
 jobs:  
-  check-bats-version:
+  set-up-env-variables:
     runs-on: ubuntu-latest
   # test:
   #   runs-on: ubuntu-latest
