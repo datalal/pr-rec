@@ -217,7 +217,7 @@ function gapiLoaded() {
  */
 async function initializeGapiClient() {
 	await gapi.client.init({
-		apiKey: GOOGLE_DRIVE_API_KEY,
+		apiKey: process.env.GOOGLE_DRIVE_API_KEY,
 		discoveryDocs: [DISCOVERY_DOC],
 	});
 	gapiInited = true;
@@ -228,14 +228,12 @@ async function initializeGapiClient() {
  * Callback after Google Identity Services are loaded.
  */
 function gisLoaded() {
-	console.log(ENV_VARIABLE);
-	console.log(GOOGLE_DRIVE_CLIENT_ID_VAR);
-	console.log(GOOGLE_DRIVE_API_KEY);
-	console.log(env.GOOGLE_DRIVE_CLIENT_ID_VAR);
-	console.log(env.ENV_VARIABLE);
+	console.log(process.env.ENV_VARIABLE);
+	console.log(process.env.GOOGLE_DRIVE_CLIENT_ID_VAR);
+	console.log(process.env.GOOGLE_DRIVE_API_KEY);
 
 	tokenClient = google.accounts.oauth2.initTokenClient({
-		client_id: GOOGLE_DRIVE_CLIENT_ID_VAR,
+		client_id: process.env.GOOGLE_DRIVE_CLIENT_ID_VAR,
 		scope: SCOPES,
 		callback: '', // defined later
 	});
