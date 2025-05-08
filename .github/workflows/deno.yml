@@ -20,7 +20,7 @@ env:
 jobs:  
   set-up-env-variables:
     runs-on: ubuntu-latest
-    environment: github-pages
+    # environment: github-pages
     steps:
       # - uses: actions/checkout@v4
         # with:
