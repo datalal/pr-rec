@@ -21,14 +21,17 @@ jobs:
   # test:
   #   runs-on: ubuntu-latest
     steps:
-      - name: Setup repo
-        uses: actions/checkout@v4
-        env: # Or as an environment variable
-          GOOGLE_DRIVE_CLIENT_ID: '${{ secrets.GOOGLE_DRIVE_CLIENT_ID }}'
-          GOOGLE_DRIVE_API_KEY: '${{ secrets.GOOGLE_DRIVE_API_KEY }}'
-        with:
-          node-version: '20'
-      # - run: npm install -g bats
+      uses: actions/checkout@v4
+      with:
+        node-version: '20'
+      run: |
+        echo "GOOGLE_DRIVE_CLIENT_ID_VAR: $GOOGLE_DRIVE_CLIENT_ID_VAR"
+        # echo "GOOGLE_DRIVE_API_KEY_VAR : $GOOGLE_DRIVE_API_KEY_VAR"
+      env: # Or as an environment variable
+        GOOGLE_DRIVE_CLIENT_ID: '${{ secrets.GOOGLE_DRIVE_CLIENT_ID }}'
+        GOOGLE_DRIVE_API_KEY: '${{ secrets.GOOGLE_DRIVE_API_KEY }}' 
+        GOOGLE_DRIVE_CLIENT_ID_VAR: ${{ vars.GOOGLE_DRIVE_CLIENT_ID_VAR }}
+
       # - run: bats -v
       
       # - name: Setup Deno
